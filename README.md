@@ -35,6 +35,11 @@ $curl http://localhost:9000/counter-api/top/{limit} -H "Authorization: Basic b3B
 $curl http://localhost:9000/counter-api/sampleParagraph -v -H "Authorization: Basic b3B0dXM6Y2FuZGlkYXRlcw"
 ```
 
+## Following points have been purposely omited
+- Logging
+- Integration Tests
+- Removing credentials from source control
+
 ## Structure
 
 ```

@@ -19,20 +19,17 @@ public class ParagraphProxy {
 	private RestTemplate restTemplate;
 
 	@Autowired
-	Environment environment;
+	private Environment environment;
 
 	@Value("${search-api.default-paragraph-path}")
 	private String defaultParagraphPath;
 
 	public String retrieveParagraphContent() {
-		return retrieveParagraphContent("");
-	}
-
-	public String retrieveParagraphContent(String path) {
 		String port = environment.getProperty("local.server.port");
 		String preparedDefaultParagraphPath = defaultParagraphPath.replace("{port}", port);
-		
-		ResponseEntity<String> paragraphResponse = restTemplate.getForEntity(preparedDefaultParagraphPath, String.class);
+
+		ResponseEntity<String> paragraphResponse = restTemplate.getForEntity(preparedDefaultParagraphPath,
+				String.class);
 		return paragraphResponse.getBody();
 	}
 }

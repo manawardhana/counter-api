@@ -47,7 +47,7 @@ public class StringSearchUtil {
 	
 	private static Stream<Map.Entry<String, Integer>>getWordFrequenciesStreem(String str) {
 
-		String[] words = str.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+		String[] words = str.replaceAll("\\p{P}", " ").toLowerCase().split("\\s+");
 		
 		Stream<Map.Entry<String, Integer>> frequencyMap = Arrays.asList(words).stream()
 				.filter(e -> e.length() > 0)
@@ -57,6 +57,6 @@ public class StringSearchUtil {
 				.entrySet().stream()
 				.sorted(Map.Entry.<String, Integer>comparingByValue().reversed());
 				
-				return frequencyMap;
+		return frequencyMap;
 	}
 }

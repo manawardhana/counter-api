@@ -31,32 +31,33 @@ public class CounterApiController {
 
 	@Autowired
 	private SearchService searchService;
-	
-    @RequestMapping(value="search", method=RequestMethod.POST)
-    public @ResponseBody Map<String, List<WordFrequency>> getWordFrequency(@RequestBody Map<String, List<String>> requestBody) {
-        List<WordFrequency> wordFrequencies = searchService.queryWordFrequency(requestBody.get("searchText"));
-        Map<String, List<WordFrequency>> response = new HashMap<>();
-        response.put("counts", wordFrequencies);
-        return response;
-    }
 
-    @RequestMapping(value = "/top/{limit}", method=RequestMethod.GET)
-    public void topWordsAsCSV(@PathVariable("limit") Integer limit, HttpServletResponse response) {  
-    	Map<String, Integer> topWords = searchService.getTopWords(limit);
-    	StringBuffer csvContent = new StringBuffer();
+	@RequestMapping(value = "search", method = RequestMethod.POST)
+	public @ResponseBody Map<String, List<WordFrequency>> getWordFrequency(
+			@RequestBody Map<String, List<String>> requestBody) {
+		List<WordFrequency> wordFrequencies = searchService.queryWordFrequency(requestBody.get("searchText"));
+		Map<String, List<WordFrequency>> response = new HashMap<>();
+		response.put("counts", wordFrequencies);
+		return response;
+	}
 
-    	for(Entry<String, Integer> e : topWords.entrySet()){
-    		csvContent.append(e.getKey() + "," + e.getValue() + "\n");
-    	}
-    	
-        response.setContentType("application/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=" + "top" + limit + "words");
-    	response.setContentType("text/plain; charset=utf-8");
-        
-    	try {
+	@RequestMapping(value = "/top/{limit}", method = RequestMethod.GET)
+	public void topWordsAsCSV(@PathVariable("limit") Integer limit, HttpServletResponse response) {
+		Map<String, Integer> topWords = searchService.getTopWords(limit);
+		StringBuffer csvContent = new StringBuffer();
+
+		for (Entry<String, Integer> e : topWords.entrySet()) {
+			csvContent.append(e.getKey() + "," + e.getValue() + "\n");
+		}
+
+		response.setContentType("application/csv");
+		response.setHeader("Content-Disposition", "attachment; filename=" + "top" + limit + "words");
+		response.setContentType("text/plain; charset=utf-8");
+
+		try {
 			response.getWriter().print(csvContent.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }
